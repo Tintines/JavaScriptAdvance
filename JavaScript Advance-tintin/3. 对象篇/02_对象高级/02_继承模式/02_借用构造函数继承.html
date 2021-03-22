@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>02_借用构造函数继承</title>
+</head>
+<body>
+<!--
+方式2: 借用构造函数继承(假的)
+1. 套路:
+  1. 定义父类型构造函数
+  2. 定义子类型构造函数
+  3. 在子类型构造函数中调用父类型构造
+2. 关键:
+  1. 在子类型构造函数中通用super()调用父类型构造函数
+-->
+<script type="text/javascript">
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  var person1 = new Person('kobe', 43);
+
+
+  function Child(name, age, sex) {
+    // 推到思路
+    // this.name = name;
+    // this.age = age;
+    // 借用Person中的代码
+    // Person(name, age); // 直接调用this指向 ---> window ,就会给全局作用域中添加变量(拉跨)
+    // 思考： 应该让Person中this 指向 Child的实例对象
+    // 难点： 外部Child被实例化后此时,  this = Child的实例对象 ;
+    // 过程Person.call(Child的实例对象, name, age); 修改Person的this指向
+    Person.call(this, name, age); // 借用Person构建函数初始化相同属性
+    this.sex = sex;
+    console.log(this);
+  }
+
+  var child2 = new Child('xiaoming', 18, '男'); // 实例化后 this指向该实例对象
+  console.log(Child('子砚', 2, '男'));            // 构造函数直接调用 this指向window
+  // Child()直接调用,内部的this指向window,内部即使Person.call(this, name, age),此时this依然是window
+  // 通过child2 = new Child()调用实例化时,内部的 this指向该实例对象   *****
+
+
+</script>
+</body>
+</html>

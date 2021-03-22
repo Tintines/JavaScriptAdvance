@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>04_作用域_面试题</title>
+</head>
+<body>
+<script type="text/javascript">
+  /*
+   问题: 结果输出多少?
+   */
+  //  作用域,它是静态的(相对于上下文对象), 在编写代码时就确定了,跟调用没关系
+  var x = 10;
+  function fn() {
+    console.log(x);   // 易错,应为10,既其作用域定义的时候就确定了(直接找定义时所在区域,沿作用域由内向外查找),
+    //和它如何调用没有关系,更不能沿着它执行的方向进行错误的查找
+  }
+  function show(f) {
+    var x = 20;
+    f();
+  }
+  // show 和 fn 的作用域是平级的关系
+  show(fn);
+</script>
+</body>
+</html>

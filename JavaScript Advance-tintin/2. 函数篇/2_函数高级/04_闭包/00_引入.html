@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>00_引入</title>
+</head>
+<body>
+
+<button>测试1</button>
+<button>测试2</button>
+<button>测试3</button>
+<!--
+需求: 点击某个按钮, 提示"点击的是第n个按钮"
+-->
+<script type="text/javascript">
+  var btns = document.getElementsByTagName('button')
+  /* //有问题
+  for(var i=0,length=btns.length;i<length;i++) {
+    var btn = btns[i]  // btn为每个循环出来的对象
+    btn.onclick = function () {
+      alert('第'+(i+1)+'个')
+    }
+  }*/
+
+  //解决一: 保存下标
+  // for(var i=0,length=btns.length;i<length;i++) {
+  //   var btn = btns[i]   // btn为每个循环出来的不同对象
+  //   btn.index = i   // 往相应对象上添加属性名为 index,值为 i
+  //   btn.onclick = function (btn) {
+  //     alert('第'+(this.index+1)+'个') // 关键点:this 指向相应的btn,保证取到正确的存储的值
+  //     //alert('第'+(btn.index+1)+'个') // 不行,此时看不到对应btn
+  //     console.log(btn); // MouseEvent
+  //   }
+  // }
+
+  //解决办法: 利用闭包
+  for(var i=0,length=btns.length;i<length;i++) {
+    (function (i) {
+      var btn = btns[i]
+      btn.onclick = function () {
+        alert('第'+(i+1)+'个')
+      }
+    })(i)
+  }
+</script>
+</body>
+
+</html>

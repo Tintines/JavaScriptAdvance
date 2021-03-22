@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>07_面试题2</title>
+</head>
+<body>
+
+<script type="text/javascript">
+  /*
+   说说它们的输出情况
+   */
+
+  function fun(n, o) {
+    console.log(o);
+    return {
+      fun: function (m) {// 满足产生闭包的条件， 产生了一个闭包引用 ---> 外部函数fun的变量对象 === {n: 0, o:undefined }
+        // var num = 123;
+        // var result = fun(m, n) -->此时result接收的是一个对象,也就是return fun(m, n)时返回的还是个对象毕竟fun(m, n)需要调用 {}
+        return fun(m, n);// m  = 1, n = 0
+      }
+    }
+  }
+
+  // 链式调用时其外部的变量对象一直在被重新操作
+  //var b = fun(0).fun(1).fun(2).fun(3).fun(30).fun(55) //undefined,0,1,2, 3, 30
+
+  //var c = fun(0).fun(1) // 此时外部闭包变量对象为{n: 1, o: 0}
+  //c.fun(2) // 1  调用后并没有接收新的返回值,所以 c的变量对象没有被改变,依然是 {n: 1, o: 0}
+  //c.fun(3) //undefined,0, 1,1   同上
+
+  var a = fun(0) // 第一次调用时返回的是一个包含函数的对象,此后针对该对象通过 点方法 进行调用
+                 // 此时代码就不往返回的代码内部执行了,使用a接着---> a = {fun: function(){}}
+                 // 此时外部函数的变量已经确定 外部函数fun的变量对象 ===  {n: 0, o:undefined }
+
+    // 关键点: 调用后并没有接收新的返回值,所以 a的变量对象没有被改变,依然是 {n: 0, o:undefined }
+    a.fun(1)  // m = 1 n = 0;   输出 0
+  // a.fun(2)  
+  // a.fun(3)  //undefined,0 0 0   
+
+
+
+
+
+
+
+
+</script>
+</body>
+</html>

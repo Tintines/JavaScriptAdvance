@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>01_原型链继承</title>
+</head>
+<body>
+<!--
+方式1: 原型链继承
+  1. 套路
+    1. 定义父类型构造函数
+    2. 给父类型的原型添加方法
+    3. 定义子类型的构造函数
+    4. 创建父类型的对象赋值给子类型的原型
+    5. 将子类型原型的构造属性设置为子类型
+    6. 给子类型原型添加方法
+    7. 创建子类型的对象: 可以调用父类型的方法
+  2. 关键
+    1. 子类型的原型为父类型的一个实例对象
+-->
+<script type="text/javascript">
+  // 定义父类
+  function Person(name, age) {
+    this.name = name;
+    this.age = age;
+    this.sex = '男'
+  }
+  // 往父类原型上添加方法
+  Person.prototype.showName = function () {
+    console.log(this.name);
+  }
+  var person1 = new Person('kobe', 43);
+
+  // 原型继承： 子类的原型 成为 父类的实例
+  // 将Child的显示原型通过new Person()实例出,此时查找原型链时会经过父构造函数Person
+  // 此时会丢失属性constructor构造器属性
+  console.log(Child.prototype); // 原始输出{constructor: ƒ}
+                                // 既Child.prototype = {constructor: Child} 
+  // 原型继承时,将Child的显示原型通过new Person()实例出后,为赋值语句,
+  // 且Person构造函数自身内部也没有 this.constructor=constructor 属性,既实例化后没有constructor 属性,于是将constructor覆盖掉了
+  Child.prototype = new Person();
+  // 每一个原型对象身上都有一个属性constructor,目的: 标识当前的构造器是谁
+  // 必须手动添加还原 原型上的constructor属性, 属性值:指向其的构造器
+  Child.prototype.constructor = Child;
+
+  // 定义一个child类
+  function Child(name, age) {
+    this.name = name;
+    this.age = age;
+  }
+  
+  var child1 = new Child('xiaoming', 18);
+
+  console.log(child1);
+  console.log(child1.sex);
+
+  child1.showName(); //原型链查找属性过程: 自身 ---> Child.prototype.__proto__ --> Person.prototype  --> Object.prototype
+
+  // person1 ---> Person.prototype(showName) ---> Object.prototype
+  // (正常查找原型链)child1 ---> Child.prototype ---> Object.prototype 
+  // (修正后查找原型链)child1 ---> Child.prototype ---> Person.prototype(有showName方法) ---> Object.prototype
+
+
+</script>
+</body>
+</html>

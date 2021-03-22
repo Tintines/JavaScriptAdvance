@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+
+// 报错查找思路: 某个确定方法报错(XXX is not defined),则检查一下调用该方法的对象
+
+<script type="text/javascript">
+  function iteratorUtil() { // iterator接口 ： 方法 || api
+    console.log('我的方法被调用了', this); // 此处this是遍历的目标数组
+    // console.log(target); // 原生方法没有传入类似参数target 所以报.length错误(length方法本身没错),
+                            // 进而判断出是length之前的变量出错,既target值此时没有传入则为 undefined 为变量,
+                            // 进而调用undefined.length方法时报错, 因为变量undefined身上没有length的方法,所以报length is not defined
+    // 方法二: 缓存this
+    let that = this;
+    
+    let index = 0;                // 标识指针的起始位置
+    let keys = Object.keys(that); // 该方法获取 对象 中所有key的数组  ["username", "age"]
+    if(this instanceof Array){    // 遍历数组
+      return {                    // 生成iterator遍历器对象
+        next:  function (){       // 方法一: 可以使用箭头函数解决this的指向问题, 定义的时候 处在的其外层函数就是它的this
+          console.log(this);      // {next: ƒ} this指向该对象本身
+          return index < that.length?{value: that[index++], done: false}:{value: that[index++], done: true}
+        }
+      }
+    }else {                       // 遍历对象
+      return {                    // 生成iterator遍历器对象
+        next:  function (){       // 可以使用箭头函数解决this的指向问题
+          return index < keys.length?{value: that[keys[index++]], done: false}:{value: that[keys[index++]], done: true}
+        }
+      }
+    }
+  }
+
+  Array.prototype[Symbol.iterator] = iteratorUtil;
+  Object.prototype[Symbol.iterator] = iteratorUtil;   // 升级版给原型对象身上添加该接口
+  let arr = [2,3,4,5];
+  for(let item of arr){
+    console.log(item);
+  }
+  
+  // for of 消费 iterator接口
+  // 三点运算符消费 iterator接口
+  console.log(...arr);
+  
+  let obj = {
+    username: 'kobe',
+    age: 43
+  }
+
+  console.log(Object.keys(obj));  // 该方法获取 对象 中所有key的数组,不含value ["username", "age"]
+  
+  for(let item of obj){
+    console.log(item);            // kobe 43
+  }
+
+  console.log(undefined.length);  // Cannot read property 'length' of undefined
+</script>
+
+
+</body>
+</html>

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>05_Function扩展</title>
+</head>
+<body>
+<!--
+1. Function.prototype.bind(obj) :   给函数的实例使用
+  * 作用: 将函数内的this绑定为obj, 并将函数返回
+2. 面试题: 区别bind()与call()和apply()?
+  * 都能指定函数中的this
+  * call()/apply()是立即调用函数   *****
+  * bind()是将 改变this指向后生成新的函数返回 不会立即调用, 可以拿来用于定时器中的回调函数进行this指向的修改
+-->
+<script type="text/javascript">
+  var obj = {
+    name: 'kobe'
+  }
+
+  function fun(msg) {
+    console.log(this, msg);
+  }
+  // fun.call(obj, 123);      // 直接传参
+  // fun.apply(obj, [123]);   // 通过数组进行传参
+
+  // bind修改this指向,返回一个新的函数需要接受或直接调用
+  fun.bind(obj, 123)();       // 使用方法一: 直接调用
+  // 等价于
+  let fun1 = fun.bind(obj, 234);  // 使用方法二: 先定义变量接收后,再调用
+  fun1 ();
+
+  // 定时器中修改定时器回调函数this指向,必须使用bind修改后返回新函数不会立即调用 ,符合定时器的特点, 到点后才能执行回调函数
+  // 若使用call/apply进行修改完后会立即调用,不符合定时器的特点
+  setTimeout(function () {
+    console.log(this);  // {name: "kobe"}
+  }.bind(obj), 1000)    // 注意添加.bind()的位置哦
+
+
+</script>
+</body>
+</html>

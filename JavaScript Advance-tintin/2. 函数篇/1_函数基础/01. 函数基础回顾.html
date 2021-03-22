@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>函数基础回顾</title>
+</head>
+
+<body>
+
+
+  <!--
+    函数：
+      1. 理解：
+          - 函数也是对象
+          - 函数是特殊的对象，函数具备行为，通过调用可以执行内部语句
+      2. 定义函数方式:
+          - 函数声明式：function fun(){}
+          - 函数表达式(赋值语句)： var fun2 = function(){}
+      3. 调用函数方式(决定this指向)：
+          - test()
+          - new test()
+          - obj.test()
+          - test.call/apply(obj)
+      4. 为什么要设计函数(函数的作用，什么时候使用)
+          - 代码结构分明
+          - 功能点清晰，封装函数思想： 一个函数通常只有一个指定的功能
+          - 复用，提高代码性能
+          1. 简化代码的编写，减少重复代码
+          2. 功能点明确， 复用
+          3. 隔离变量，减少命名污染
+  -->
+
+  <script type="text/javascript">
+
+    /* 
+    函数传参：         *********
+    分为传基本数据类型和对象数据类型   
+      基本数据类型: 传基本类型和对象类型不一样:基本数据类型传进去后,函数外和函数内操作的不是一个值;
+      所以当传递基本数据类型的时候,函数内部运算后的结果我们需要返回;
+      对象数据类型: 如果传的是对象类型(数组),那么函数内部和外部操作的是同一个数据(数组),因此,
+      函数内部对数组所有的操作就相当于操作外部的一样.所以运算完之后不需要返回,外部一样
+      看到发生了变化;  此时函数默认返回 undefined (函数必然会有返回值)
+    */
+
+    var obj = {};
+    obj.name = 'wade'; // 添加属性
+    var a = 123;
+    // 函数具备行为
+    function fun() {
+      var a = 'abc'
+      console.log(a);
+    }
+    function fun2() {
+      var a = 123;
+    }
+
+    var fun3 = function () { }
+
+    /*
+    * 为什么要设计函数
+    *   1. 简化代码的编写，减少重复代码
+    *   2. 功能点明确， 复用
+    *   3. 隔离变量，减少命名污染
+    * */
+
+    fun();
+    var obj2 = {
+      name: 'kobe'
+    }
+    function test(num, num2) {
+      console.log(this, num, num2); // window
+    }
+
+    // call || apply 用于修改this指向的(强制绑定this), 并且会立即调用修改完this指向的函数
+    // test.call(指定的this指向对象, 参数);
+    test.call(obj2, 123, 234);    // 立即执行
+    test.apply(obj2, [123, 234])  // 返回一个函数, 需要再次调用才能执行
+
+  </script>
+
+
+</body>
+
+</html>

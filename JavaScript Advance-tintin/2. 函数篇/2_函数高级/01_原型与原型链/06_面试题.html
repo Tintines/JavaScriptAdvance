@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>06_面试题</title>
+</head>
+<body>
+
+<script type="text/javascript">
+  /*
+  测试题1
+   */
+  var A = function() {
+
+  }
+  console.log(A.prototype.n);
+  // 往原型对象中添加属性,不会更改指针指向
+  A.prototype.n = 1
+  console.log(A.prototype);
+
+  var b = new A() // {n: 1}
+
+  // 往原型对象中添加对象,将改变指针的指向产生新的对象
+  A.prototype = {
+    n: 2,
+    m: 3
+  }
+
+  var c = new A()
+  console.log(b.n, b.m, c.n, c.m) // 1 undefined 2 3
+
+
+  /*
+   测试题2
+   */
+  var Foo = function(){}; // 函数对象
+  Object.prototype.a = function(){
+    console.log('a()')
+  };
+  Function.prototype.b = function(){
+    console.log('b()')
+  };
+  var f = new Foo(); // 构造函数
+  // f就是一个普通的实例对象
+  f.a() // f的隐式原型对象 == Foo的显示原型对象 === {constructor}
+  // f.b() //f就是一个普通的实例对象,其原型链顶部为object原型对象,报错f.b is not a function
+  Foo.a() // Foo为函数对象, 当把函数当做对象看待的时候，这个时候其构造函数应该是Function
+  Foo.b()
+
+</script>
+</body>
+</html>

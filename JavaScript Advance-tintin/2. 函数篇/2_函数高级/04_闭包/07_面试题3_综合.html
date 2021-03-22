@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>面试题_综合</title>
+</head>
+<body>
+<script type="text/javascript">
+  function Foo() {
+    getName = function () { alert (1); };
+    // 区别this.getName = function () { alert (1); };此时对该构造函数实例后,该实例才会有对应的getName属性
+    return this;
+  }
+  Foo.getName = function () { alert (2);};
+  Foo.prototype.getName = function () { alert (3);};
+
+  //预解析结果 getName = function(){ alert (5);}
+  var getName = function () { alert (4);};
+  function getName() { alert (5);}
+
+
+  //请写出以下输出结果：
+  Foo.getName(); // 2
+  getName(); // 4
+  Foo().getName(); // Foo()执行完后将全局的getName进行了赋值操作 1
+  getName();// 全局被重新赋值 1
+  // new时先找离它最近的括号,然后进行整体操作
+  new Foo.getName(); // 2
+  new Foo().getName(); // 3 new Foo()后得到该构造函数的实例,先从自身找this.getName属性
+                       //   自身没有this.getName属性,沿着原型链进行查找
+
+  // 先从里面的new开始执行
+  new new Foo().getName();// 3
+
+
+  var foo = new Foo();
+
+
+  console.log(123); //内置的对象点方法调用,任何函数都有返回值,该函数返回值为undefined
+  alert(123);
+  console.log(1, console.log(2, console.log(3))); // 3  2 undefined  1 undefined
+  console.log(console.log()); // console.log()的返回值默认为undefined
+</script>
+</body>
+</html>

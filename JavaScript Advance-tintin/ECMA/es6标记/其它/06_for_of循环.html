@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>06_for_of循环</title>
+</head>
+<body>
+
+<!--
+for(let value of target){}循环遍历
+  1. 遍历数组
+  2. 遍历Set
+  3. 遍历Map
+  4. 遍历字符串
+  5. 遍历伪数组
+-->
+
+<button>按钮1</button>
+<button>按钮2</button>
+<button>按钮3</button>
+
+<script type="text/javascript">
+
+  /* let arr = [1,2,3,4,5,1,2,3,4];
+  let set = new Set(arr);
+  for(let item of set){
+    console.log(item);
+  }
+  console.log(...set);  // 1 2 3 4 5
+  
+  let str = 'abc'
+  for(let item of str){
+    console.log(item);
+  }
+  
+  let btns = document.getElementsByTagName('button');
+  // 遍历伪数组
+  for(let item of btns){
+    console.log(item);
+  } */
+  
+  
+  
+  console.log('-------------- ES5数组去重：indexOf -----------------');
+  let arr = [1,2,3,4,5,1,2,3,4];
+  console.log(arr.indexOf(9));    // -1  返回数组中元素对应下标, 无则返回 -1
+  console.log(arr.indexOf(3));    // 2
+  function uniqArr(arr) {
+    let result = [];
+    arr.forEach(function (item, index) {
+      // 判断新的数组中是否包含原数组中的元素
+      if(result.indexOf(item) === -1){
+        result.push(item);
+      }
+    })    
+    return result;
+  }
+  console.log(uniqArr(arr));
+
+  console.log('-------------- ES5数组去重: set容器 -----------------');
+  // function uniqArr2(arr) {
+  // set容器 自身可以去重
+  //   let set = new Set(arr);
+  //   console.log(set);
+  // 将set中的数据重新取出后,放到数组容器中返回
+  //   let result = [];
+  // for of 遍历取出
+  //   for(let item of set){
+  //     result.push(item);
+  //   }
+  //   return result;
+  // }
+
+  // 代码优化
+  // function uniqArr2(arr) {
+  //   // for(let item of set){
+  //   //   result.push(item);
+  //   // }
+  //   return [...new Set(arr)];
+  // }
+
+  // 终版
+  /* let uniqArr2 = arr => [...new Set(arr)];
+  console.log(uniqArr2(arr));
+ */
+
+</script>
+</body>
+
+</html>

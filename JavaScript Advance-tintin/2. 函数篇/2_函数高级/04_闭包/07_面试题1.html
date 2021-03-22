@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>07_面试题1</title>
+</head>
+<body>
+
+<script type="text/javascript">
+  /*
+   说说它们的输出情况
+   */
+
+  // //代码片段一
+  var name = "The Window";
+  var object = {
+    name: "My Object",
+    getNameFunc: function () {
+      return function () {
+        return this.name;
+      };
+    }
+  };
+
+  // object.getNameFunc()() --->相当于
+  /*
+    var result = object.getNameFunc()
+    result = result();
+    console.log(result)
+  * */
+  console.log(object.getNameFunc()());  // The Window
+
+
+  //代码片段二
+  var name2 = "The Window";
+  var object2 = {
+    name2: "My Object",
+    getNameFunc: function () {
+      var that = this; // 缓存this
+      return function () {
+        console.log(this);  // window
+        return that.name2;  // that保存的上一层的this,内部函数使用外部的变量(闭包)
+      };
+    }
+  };
+  // object2.getNameFunc()对象点调用时this指向该调用的对象
+  console.log(object2.getNameFunc()()); //  My Object
+
+
+
+
+  function fun() {
+    fun2();
+  }
+
+  fun();
+
+  function fun2() {
+    console.log(this);  // window 和它在哪调用无关,和调用方式有关
+  }
+
+  fun2();
+
+</script>
+</body>
+</html>

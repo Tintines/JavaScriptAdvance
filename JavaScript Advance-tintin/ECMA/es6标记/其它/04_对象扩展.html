@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>04_对象扩展</title>
+</head>
+<body>
+  <!--
+    1. Object.is(v1, v2)
+      * 判断2个数据是否完全相等
+    2. Object.assign(target, source1, source2..)  重点!!!!!
+      * 将源对象的属性复制到目标对象上,同属性的会覆盖,并返回目标对象,也会修改原目标对象!!
+    3. 直接操作 __proto__ 属性 隐式原型对象
+      let obj2 = {};
+      obj2.__proto__ = obj1;
+  -->
+
+<script type="text/javascript">
+  console.log(0 === -0);    // true
+  console.log(NaN === NaN); // false  六亲不认
+
+  // 长得一样就是true
+  console.log(Object.is(0, -0)); // false
+  console.log(Object.is(NaN, NaN)); // true
+  
+  console.log('--------------- Object.assign(target, source1, source2..) ----------------------');
+  let target = {};  // target对象
+  let sources1  = {name: 'kobe'};
+  let sources2 = {age: 43};
+  
+  // 克隆 拷贝   (重点) 返回的是原target对象
+  let result = Object.assign(target, sources1, sources2)
+  console.log(result);             // 返回目标对象,也会修改原目标对象
+  console.log(target);             // 返回目标对象,也会修改原目标对象
+  console.log(result === target);  // true 指向同一个地址, 浅拷贝(共用数据,只是拷贝了存放数据的地址)
+  
+  
+  console.log('---------------------- 直接操作 __proto__ 属性 -----------------------');
+  let obj3 = {};
+  // 直接操作 __proto__ 属性
+  obj3.__proto__ = target;
+  console.log(obj3);
+  
+  
+  
+  
+
+</script>
+</body>
+
+</html>

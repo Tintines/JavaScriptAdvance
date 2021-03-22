@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>05_面试题</title>
+</head>
+<body>
+<script type="text/javascript">
+  /*
+   测试题1: 先预处理函数, 后预处理变量, 如果已经存在变量就会被忽略
+   */
+  console.log(typeof a)  // function 先预处理函数, 后预处理变量, 如果已经存在变量就会被忽略
+  var a;
+  function a() {}
+
+
+  // /*
+  // 测试题2: 变量预处理, in操作符(左侧是不是右侧的属性)
+  //  */
+  console.log(b); // undefined 等价于if语句中的var 预解析能看到,值为undefined
+  if (!(b in window)) {
+    var b = 1;
+    console.log("我进入if语句中啦");
+  }
+  // 考点:if语句中的var 预解析是否能看到(可以看到),假设预解析看不到时就会直接报错(b is not defined)
+  // 因为进入不了该if条件语句,导致虽能预解析,但不能给b进行赋值操作
+  console.log(b) // undefined 
+  //
+  // /*
+  // 测试题3: 预处理, 顺序执行
+  //  */1
+  // 考点:同名变量和函数预解析 
+  // 预解析结果 c = function(){}
+  
+  var c = 1         //但是该行执行完毕时,同名C被赋值为一个常量
+  function c(c) {   // 字面定义的函数,代码执行时直接跳过,区别字面量定义的函数调用时才会看它
+    console.log(c)  // 烟雾弹:该函数压根没有执行,所以不会被打印 2 
+    var c = 3
+  }
+  console.log(c);   // 1
+  // c(2)           // 1(2) 1不是函数 ,输出 c is not a function
+
+  // 拓展: 同名形参优先还是,内部定义的同名变量预解析优先
+  function tintin(c) {  // 字面定义的函数,代码从上往下执行时直接跳过,函数调用时才会看它
+    console.log(c)      // 5 同名形参优先
+    var c = 3
+  }
+  tintin(5)
+
+  // 函数内部有var 没var 时有着天壤之别
+  var d = 2
+  function tintin1() {  // 字面定义的函数,代码执行时直接跳过,区别字面量定义的函数调用时才会看它
+    console.log(d)      // undefined 此时内部有 var d 该d是函数内的局部变量
+    var d = 3
+  }
+  tintin1()       
+
+  function tintin2() {  // 字面定义的函数,代码执行时直接跳过,区别字面量定义的函数调用时才会看它
+    console.log(d)      // 2 此时内部 没有var  该d是函数内的全局变量,会进行全局作用域查找
+     d = 3
+  }
+  tintin2()
+
+</script>
+</body>
+</html>

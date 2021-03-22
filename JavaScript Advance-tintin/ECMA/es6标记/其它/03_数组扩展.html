@@ -1,0 +1,67 @@
+
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>03_数组扩展</title>
+</head>
+<body>
+<button>测试1</button>
+<br>
+<button>测试2</button>
+<br>
+<button>测试3</button>
+<br>
+
+  <!--
+    1. Array.from(v) : 将伪数组对象或可遍历对象转换为真数组  给Array函数对象使用
+    2. Array.of(v1, v2, v3) : 将一系列值转换成数组        给Array函数对象使用
+
+    以下给实例对象用
+    3. find(function(value, index, arr){return true}) : 找出第一个满足条件返回true的元素
+    4. findIndex(function(value, index, arr){return true}) : 找出第一个满足条件返回true的元素下标
+  -->
+<script type="text/javascript">
+  
+  
+  let btns = document.getElementsByTagName('button')
+  // 真数组 身上才能使用forEach等数组方法
+  Array.from(btns).forEach(function (item, index) {
+    console.log(item, index);
+  })
+
+  console.log(Array.of(1, 'abc', true));
+  // Array.of()实现原理模拟
+  function of(...values) {
+    let result = [];
+    // 通过...扩展运算符收集到的,数组为真数组, 不需要转化,就可以使用数组相关的方法
+    values.forEach( (item) => result.push(item))
+    return result;
+  }
+  console.log(of(1, 'abc', true));
+  
+
+  let arr = [2,5,4,1,6,3,2,3,6];
+  // 找出第一个满足条件返回true的元素
+  let result = arr.find(function (item, index) {
+    console.log(item, index);
+    return item > 5;
+  });
+  console.log(result);
+
+  // 找出第一个满足条件返回true的元素下标
+  let result = arr.findIndex(function (item, index) {
+    console.log(item, index);
+    return item > 5;
+  });
+  console.log(result);
+
+
+  // 从性能上考虑,forEach会全部进行遍历, 而find findIndex 找到满足条件的元素后就停止遍历(性能更好)
+  // arr.forEach(function (item) {
+  //   if(item){}
+  // })
+
+</script>
+</body>
+
+</html>

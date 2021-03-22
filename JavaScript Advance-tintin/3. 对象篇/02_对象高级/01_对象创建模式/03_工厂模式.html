@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>03_工厂模式</title>
+</head>
+<body>
+<!--
+方式三: 工厂模式
+  * 套路: 通过工厂函数动态创建对象并返回
+  * 适用场景: 需要创建多个对象
+  * 问题: 对象没有一个具体的类型, 都是return返回的Object类型
+-->
+<script type="text/javascript">
+
+  // 工厂函数: 必须return返回一个需要的数据的函数
+  function Person(name, age) {
+    return {
+      name: name,
+      age: age
+    }
+  }
+
+  // 区别构造函数,工厂函数没有new ,直接进行 传参并定义变量接收
+  var person1 = Person('kobe', 43);
+  var person2 = Person('wade', 38);
+  // 该工厂函数返回一个普通对象,可以点方法添加属性与方法
+  person2.sex = '男'
+  console.log(person2);
+  console.log(person1 instanceof Person); // false 既person1不是该工厂函数的一个实例
+                                          // Person 不在person1 的原型链的节点上
+                                          // 仅仅是它的一个返回对象
+
+</script>
+</body>
+</html>

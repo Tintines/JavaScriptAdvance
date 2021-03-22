@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>03_Object扩展</title>
+</head>
+<body>
+<!--
+ES5给Object扩展了一些静态方法, 常用的2个: (点方法将属性方法加到Object自身定义的形式,说明该方法是给Object自身使用的)
+1. Object.create(prototype, [descriptors])
+  * 作用: 以指定对象为原型[在__proto__链上添加属性或方法] 返回创建的一个新的对象, (通常需要接收一下)
+  * {descriptors}为返回的新的对象指定添加 新的属性, 并对属性进行描述
+    - value : 指定值
+    - writable : 标识当前属性值是否是可修改的, 默认为false
+    - configurable: 标识当前属性是否可以被删除 默认为false
+    - enumerable： 标识当前属性是否能用for in 枚举 默认为false
+2. Object.defineProperties(object, descriptors)   重点
+  * 作用: 为指定对象定义扩展多个属性
+  * get: 用来获取当前属性值的回调函数,需要返回值
+  * set: 监视修改当前属性值的触发的回调函数，并且实参即为修改后的值,作为实参传入
+  * 存取器属性：setter,getter一个用来存值，一个用来取值
+-->
+<script type="text/javascript">
+  // 1. Object.create(prototype, [descriptors])
+  // var obj = {
+  //   name: 'kobe',
+  //   showName: function () {
+  //     console.log(this.name);
+  //   }
+  // }
+  
+  // var obj2 = Object.create(obj, {
+  //   sex: {             // 添加的属性名 key
+  //     value: '男',     // 对应添加的属性值 value
+  //     writable: true,  // 可以被修改的
+  //     configurable: true,
+  //     enumerable: true
+  //   },
+  //   age: {
+  //     value: 43,
+  //     enumerable: true
+  //   }
+  // });
+  // console.log(obj2.sex);
+  // obj2.sex = '女';         // 修改自己新添加的属性,能否修改由修饰符writable决定(默认为false不能)
+  // console.log(obj2);
+  // console.log(obj2.sex);
+  
+  // enumerable: 标识当前属性是否能用for in 枚举 默认为false
+  // for(var i in obj2){            // for in枚举对象的时候除了能够枚举自身的属性(key)之外还会 枚举原型 的属性名(性能不好)
+  //   console.log(i);              // 打印的是属性名
+  //   if(obj2.hasOwnProperty(i)){  // 验证是否是自身的属性
+  //     console.log(i);
+  //   }
+  // }
+
+  // delete obj2.sex;      // configurable: 标识当前属性是否可以被删除 默认为false
+  // console.log(obj2);
+
+
+
+  // 重点
+  // 2. Object.defineProperties(object, descriptors)  返回该对象
+  var obj = {
+    name: 'kobe',
+    age: 42
+  }
+  Object.defineProperties(obj, {  // 配置添加对象的属性和方法
+    sex: {    // 向obj对象中添加sex属性   当有get 和 set 时, 此处是个对象形式, 当只有get时,此处只是个函数形式
+      get: function () {          // 获取, get方法的作用: 提供扩展属性的值,不需要传参 但需要return 返回
+        console.log('get()');
+        console.log(this);        // 调用时,this为当前这个对象 obj 
+        return '男';
+      },
+      // set方法用来监视扩展属性的，
+      // 如果扩展属性一旦被修改 set就被调用，并且会自动将修改之后的属性值自动作为参数传入set函数内部
+      // 修改的是get 方法返回的 属性值
+      set: function (msg) {
+        console.log(this);        // this为当前这个对象 obj
+        console.log('set()', msg);
+      }
+    }
+  })
+  
+  console.log(obj.sex);   // 要获取扩展属性的值的时候就会自动调用get方法, 每获取一次就调用一次
+  console.log(obj.sex);   // 要获取扩展属性的值的时候就会自动调用get方法
+  console.log(obj.sex);   // 要获取扩展属性的值的时候就会自动调用get方法
+  obj.sex = '女';         // 要修改扩展属性的值的时候就会自动调用set方法, 每修改一次就调用一次
+  // console.log(obj);
+  console.log(obj.sex);
+  
+  console.log('----------------------------------------------------');
+  var obj2 = {
+    name: 'kobe',
+    age: 42
+  }
+  // 克隆obj2 数据到 obj3
+  var obj3 = {};
+  // 枚举obj2对象   内部都是基本数据类型, 得到的是浅拷贝
+
+  // 方法一 : 得到的是相互隔离的属性 
+  // for (var item in obj2) {           // for in枚举对象的时候除了能够枚举自身的属性(key)之外还会 枚举原型 的属性名(性能不好)
+  //   if (obj2.hasOwnProperty(item)){  // 判断是否是obj2自身的属性
+  //     console.log(item);             // item为 属性名key
+  //     obj3[item] = obj2[item]        // 此处key为变量
+  //   }
+  // }
+  // console.log(obj3);
+  // obj2.name = '子砚'
+  // console.log(obj2.name);
+  // console.log(obj3.name);
+
+  // 方法二 : 得到的是响应式数据 双向数据绑定
+  for(var item in obj2){
+    if(obj2.hasOwnProperty(item)){
+      // 通过闭包解决循环完只能取到最后的属性名key的问题
+      (function (item) {
+        Object.defineProperties(obj3, {
+          [item]: {               // 配置对象 属性名为一个变量 [item] 动态添加 并 赋值
+            get: function () {
+              return obj2[item];  // get方法 return返回的属性值  都是引用的obj2中的属性
+            },
+            set: function (msg) {
+              console.log('set()', msg);
+              obj2[item] = msg;   // set方法修改的是 get方法return的属性值  都是引用修改obj2中的属性
+            }
+          }
+        })
+      })(item)
+    }
+  }
+  
+  console.log(obj3.name);
+  console.log(obj3.age);
+  obj2.name = 'wade'
+  console.log(obj3.name);
+
+  obj3.name = 'duncan';
+  console.log(obj3.name);
+  console.log(obj2.name);
+  
+</script>
+</body>
+</html>

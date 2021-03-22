@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>01_let关键字</title>
+</head>
+
+<body>
+
+  <button>测试1</button>
+  <br>
+  <button>测试2</button>
+  <br>
+  <button>测试3</button>
+  <br>
+  <!--
+  ***let
+  1. 作用:
+    * 与var类似, 用于声明一个变量
+  2. 特点:
+    * 在块作用域内有效  *****
+    * 不能重复声明定义
+    * 会预处理，有变量提升， 但是不能提前使用提升的变量
+    变量提升:
+      - 全局变量提升
+        - 会 新 创建一个变量对象(script)用来收集全局作用域下了let定义的变量, 但是没有赋值
+      - 局部变量提升
+        - 会将var let 定义的变量全部放到当前函数的变量对象中(local)
+      - 同var的提升的区别
+        - let提升的变量在未赋值之前不允许被使用
+  3. 应用:
+    * 循环遍历加监听
+    * 使用let取代var是趋势
+  -->
+  <script type="text/javascript">
+    console.log(a);            // 变量提升但没有赋值,所以值为  undefined
+    var a = 123;
+    var a = 234;
+    console.log(a);
+    // console.log(b);         // ReferenceError: b is not defined
+
+    // console.log(ausername); // 报错 初始化赋值前读不到 Cannot access 'ausername' before initialization
+    let ausername = 'wade';
+    let username = 'kobe2';
+    console.log(ausername);
+
+    function fun() {
+      console.log(ausername);   // 当外部定义了同时内部也使用let定义了时, Cannot access 'ausername' before initialization
+      // let ausername = 'kobe'
+      console.log(ausername);
+      console.log(a);           // 234
+    }
+    fun();
+
+    let btns = document.getElementsByTagName('button');   // 获取所有的button 得到的是一个 伪数组 !!!
+    console.log(btns);    // [button, button, button]
+    // 方法一 : 利用let 定义的变量在 为块级作用域
+    // 每循环一次,就产生对应的块级作用域,且作用域不会覆盖,函数调用时在其对应象块级作用域中查找变量
+    for (let i = 0; i < btns.length; i++) {
+      var btn = btns[i];
+      
+      btn.onclick = function () {
+        alert(i + 1);
+      }
+    }
+
+  // 方法二 : 利用闭包
+  // 原理: 每循环一次就调用一次函数,并创建变量对象,但是函数调用完后该栈中变量对象由于闭包的关系没有被立即销毁
+  // for (var i=0; i<btns.length; i++ ){
+  //     var btn = btns[i];
+  //   (function (i) {
+  //     btn.onclick = function () {
+  //       alert(i+1)
+  //     }
+  //   })(i) 
+  // }
+
+  </script>
+</body>
+
+</html>
