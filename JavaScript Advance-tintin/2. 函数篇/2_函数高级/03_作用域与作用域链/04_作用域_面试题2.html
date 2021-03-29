@@ -9,7 +9,7 @@
   /*
    说说它们的输出情况
    */
-   console.log(fn); // 变量提升var fn 输出值:undefined
+  console.log(fn);  // 变量提升var fn 输出值:undefined
   var fn = function () {
     console.log(fn) // 打印出函数本身,
                     // 过程:现在自身查找fn,当前作用域没有fn,往外层作用域查找,
@@ -17,29 +17,31 @@
   }
   fn()
 
-  // 作用域分类
-  //   * 全局作用域
-  //   * 函数作用域
-  //   * eval作用域
-  //   * 没有块作用域(ES6有了)
+  /* 作用域分类 */
+  /** 全局作用域
+    * 函数作用域
+    * eval作用域
+    * 没有块作用域(ES6有了) */
   var obj = {
     fn2: function () {
       console.log(fn2)  // 报错 fn2 is not defined
                         // 推推: 当前作用域没有fn2,往外部查找作用域,
-                        // 当前外部直接对应全局作用域,被对象迷惑,,,对象没有作用域!!!
+                        // 当前外部直接对应全局作用域, 别被对象迷惑,,,对象没有作用域!!!
                         // 全局中有obj这个属性,fn2为obj内的属性,并没有暴露在全局window中,不能被预解析看到
                         // 既在window中fn2 is not defied
 
-      // console.log(this.fn2)  // obj.fn2()调用, 调用方法决定该this指向外部对象obj
+      // console.log(this.fn2)  // this指向obj对象, 等价于obj.fn2()调用, 函数调用方法决定该this指向外部对象obj
     }
   }
   obj.fn2()
 
-  // 拓展
+  /* 拓展 */
+  /* 函数直接执行this指向window */
   // 代码定义时创建全局作用域 ---> 预解析工作 ---> 创建全局的执行上下文 ---> 执行上下文环境 
   // ---> 收集全局变量对象{a: undefined, this: window， fun:function} ---> 作用域链[全局变量对象]
   var a = 123;
   var b = 'abc'
+
   // 先定义---> 创建局部作用域---> 函数自身有一个[[scopes]]: 上一级作用域链(global)
   function fun() {
     // 创建局部执行上下文 ---> 局部变量对象{a: undefined, fun2: function, this: window} ---> 创建作用域链[局部变量对象, Global]

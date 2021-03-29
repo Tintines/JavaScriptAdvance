@@ -6,15 +6,15 @@
 </head>
 <body>
 <!--
-1. 变量声明提升
-  * 通过var定义(声明)的变量, 在定义语句之前就可以访问到,但是不赋值
-  * 值: undefined           重点重点重点重点重点
-2. 函数声明提升
-  * 通过function声明的函数, 在之前就可以直接调用
-  * 值: 函数定义(对象)        重点重点重点重点重点
-3. 问题: 变量提升和函数提升是如何产生的?
+  1. 变量声明提升
+    * 通过var定义(声明)的变量, 在定义语句之前就可以访问到,但是不赋值
+    * 值: undefined           重点重点重点重点重点
+  2. 函数声明提升
+    * 通过function声明的函数, 在之前就可以直接调用
+    * 值: 函数定义(对象)        重点重点重点重点重点
+  3. 问题: 变量提升和函数提升是如何产生的?
 
-    函数内部的if 语句不会影响变量提升
+      函数内部的if 语句不会影响变量提升!!!
 -->
 <script type="text/javascript">
 
@@ -23,13 +23,14 @@
   console.log('程序继续执行');
   console.log(a);
   var a = 123;
-  fun();
+  // fun();
   function fun() {
     var a = 234;
     console.log('fun()');
   }
 
-  // fun2(); //等式定义的函数未提升,此时相当于undefined(),结果报错fun2 is not a function
+  /* 易错点 */
+  // fun2();  // 表达式定义的函数未提升,此时相当于undefined(),结果报错fun2 is not a function!!!!!!
   var fun2 = function(){}
   console.log('程序执行完毕');
 
@@ -42,18 +43,19 @@
   // 预解析： 全局预解析，局部预解析
   var a = 4
   function fn () {
-    console.log(a)  //局部与解析导致输出 undefined
-    var a = 5
+    console.log(a)  // 函数内部局部预解析导致输出 undefined
+    var a = 5       // 函数局部有 var 则修改的是函数内部的变量!!
   }
-  fn()
+  console.log(fn(),a);  // undefined 4
 
 
   /*变量提升*/
   console.log(a1) //输出 undefined
 
-  /*函数提升*/
+  /*声明式定义的函数会提升*/
   a2() //输出 a2()
 
+  /* 通过表达式定义的变量或函数, 都只会提升表达式左侧的变量, 提前获取时为 undefined */
   var a1 = 3
   function a2() {
     console.log('a2()')
