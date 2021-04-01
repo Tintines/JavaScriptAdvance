@@ -23,5 +23,5 @@ fn(o4)
 console.log(o3.m, o4.m)   // 1 1
 a = 2
 fn(a)
-console.log(o3.m, o4.m)
+console.log(o3.m, o4.m)   // 1 1
 

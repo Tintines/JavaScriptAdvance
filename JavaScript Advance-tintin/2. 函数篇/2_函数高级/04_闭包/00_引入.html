@@ -25,9 +25,9 @@
   //解决一: 保存下标
   // for(var i=0,length=btns.length;i<length;i++) {
   //   var btn = btns[i]   // btn为每个循环出来的不同对象
-  //   btn.index = i   // 往相应对象上添加属性名为 index,值为 i
+  //   btn.index = i       // 往相应对象上添加属性名为 index,值为 i
   //   btn.onclick = function (btn) {
-  //     alert('第'+(this.index+1)+'个') // 关键点:this 指向相应的btn,保证取到正确的存储的值
+  //     alert('第'+(this.index+1)+'个')  // 关键点:this 指向相应的btn,保证取到正确的存储的值
   //     //alert('第'+(btn.index+1)+'个') // 不行,此时看不到对应btn
   //     console.log(btn); // MouseEvent
   //   }

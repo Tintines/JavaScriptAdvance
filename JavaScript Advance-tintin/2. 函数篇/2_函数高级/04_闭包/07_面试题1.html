@@ -9,9 +9,9 @@
 <script type="text/javascript">
   /*
    说说它们的输出情况
-   */
+  */
 
-  // //代码片段一
+  // 代码片段一
   var name = "The Window";
   var object = {
     name: "My Object",
@@ -47,8 +47,6 @@
   console.log(object2.getNameFunc()()); //  My Object
 
 
-
-
   function fun() {
     fun2();
   }
@@ -56,7 +54,7 @@
   fun();
 
   function fun2() {
-    console.log(this);  // window 和它在哪调用无关,和调用方式有关
+    console.log(this);  // window 和它在哪调用无关,和调用方式有关!!!
   }
 
   fun2();
