@@ -5,27 +5,27 @@
   <title>03_相关问题</title>
 </head>
 <body>
-<!--
-问题: 什么时候必须使用['属性名']的方式?(必须加引号作为字符串)
-  * 属性名不是合法的标识名
-  * 属性名不确定
--->
+  <!--
+    问题: 什么时候必须使用['属性名']的方式?(必须加引号作为字符串)
+      * 1. 属性名不是合法的标识名
+      * 2. 属性名不确定
+  -->
 <script type="text/javascript">
-
+  /* 定义一个空对象 */
   var obj = {};
-  // 添加属性
+  // 向该空对象中添加属性
   obj.name = 'kobe';
-  // 有连字符的名称(属性名不是合法的标识名)作为key时必须使用 [] 添加方法属性key名的方法,
-  // 同时需要 []内必须为字符串,不添加则为变量
+  /* 有连字符的名称(属性名不是合法的标识名)作为key时必须使用 [] 添加方法属性key名的方法,
+     同时需要 []内必须为字符串,不添加则为变量 */
   obj['content-type'] = 'application';
   console.log(obj['content-type']);
   console.log(obj);
   
   
   var msg = 'age';
-  // obj[msg]:表示将 变量msg的 值age作为obj的属性key,然后将 值42作为属性值 赋值给obj中的age属性
-  // 等价于 obj[msg] == obj['age']
-  obj[msg] = 42;  //等价 obj['age']=42   名值对 age: 42
+  // obj[msg]=42 表示将 变量msg的 值age作为obj的属性key,然后将 值42作为属性值 赋值给obj中的age属性
+  // 等价于 obj[msg] === obj['age']
+  obj[msg] = 42;    //等价于 obj['age']=42   名值对 age: 42
   console.log(obj);
 
 

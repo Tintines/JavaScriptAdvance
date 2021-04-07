@@ -7,20 +7,21 @@
 <body>
 
 <script type="text/javascript">
-  // 对象中所有的key都是字符串
+  /* 对象中所有的key都是字符串 */
   var a = {}
-  var obj1 = {n:345345345} // toString() = '[object Object]'
-  var obj2 = {hh: 4535345} // toString() = '[object Object]'
-  // 等价于 a[obj1] == a[{n:345345345}.toString()] == a['[object Object]']
-  a[obj1] = 4     // 将一个对象作为另一个对象的key时,会自动调用toString方法得到 '[object Object]'作为key
-  console.log(a); // {[object Object]: 4}
+  var obj1 = {n:345345345}    // 对象调用toString() 得到 '[object Object]'
+  var obj2 = {hh: 4535345}    // 对象调用toString() 得到 '[object Object]'
+  // 等价于 a[obj1] === a[{n:345345345}.toString()] === a['[object Object]']
+  a[obj1] = 4       // 将一个对象作为另一个对象的key时,会自动调用toString方法得到 '[object Object]'作为key
+  console.log(a);   // {[object Object]: 4}
   a[obj2] = 5     
-  console.log(a); // {[object Object]: 5}
+  console.log(a);   // {[object Object]: 5}
   // 下两个等价
   console.log(a[obj1]);
-  console.log(a['[object Object]']) // 既调用 a.[object Object]属性,得到其对应属性值 输出多少? 5
+  console.log(a['[object Object]']) // 既读取 a.[object Object]属性,得到其对应属性值 输出多少? 5
 
-
+  /* 扩展:
+    函数调用toString() 得到函数自身文字形式 */
 
 </script>
 </body>
